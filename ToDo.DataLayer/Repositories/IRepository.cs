@@ -9,13 +9,14 @@ using ToDo.DataLayer.Models;
 
 namespace ToDo.DataLayer.Repositories
 {
-    public interface IRepository
+    public abstract class IRepository
     {
-        DataTable GetTable();
-        DataRow GetById(int id);
-        bool Add(ModelsInterface model);
-        bool Delete(int id);
-        bool Modify(int id, ModelsInterface model);
+        public string connStr = "server=desktop-iekfilg;database=ToDo_DB;integrated security=true;MultipleActiveResultSets=true";
+        public abstract DataTable GetTable();
+        public abstract DataRow GetById(int id);
+        public abstract bool Add(ModelsInterface model);
+        public abstract bool Delete(int id);
+        public abstract bool Modify(int id, ModelsInterface model);
 
     }
 }

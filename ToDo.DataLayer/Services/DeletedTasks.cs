@@ -11,7 +11,7 @@ using ToDo.DataLayer.Repositories;
 
 namespace ToDoApp.Tables
 {
-    public class DeletedTasks: ToDo.DataLayer.Repositories.IRepository
+    public class DeletedTasks : ToDo.DataLayer.Repositories.IRepository
     {
 
         DataTable table;
@@ -19,16 +19,21 @@ namespace ToDoApp.Tables
         SqlConnection conn = null;
         SqlCommand command = null;
         SqlDataAdapter adapter = null;
-        public DataTable GetTable()
+
+        public DeletedTasks()
+        {
+            GetTable();
+        }
+        public override DataTable GetTable()
         {
             table = new DataTable();
 
             try
             {
-                conn = new SqlConnection("server=desktop-iekfilg;database=ToDo_DB;integrated security=true;MultipleActiveResultSets=true");
+                conn = new SqlConnection(connStr);
                 conn.Open();
 
-                command = new SqlCommand("select * from DeletedTasks", conn);
+                command = new SqlCommand("select * from Categories", conn);
                 command.CommandType = CommandType.Text;
                 command.ExecuteNonQuery();
 
@@ -54,25 +59,25 @@ namespace ToDoApp.Tables
             return table;
         }
 
-        public bool Add(ModelsInterface model)
+        public override bool Add(ModelsInterface model)
         {
             throw new NotImplementedException();
         }
 
-        public bool Delete(int id)
+        public override bool Delete(int id)
         {
             throw new NotImplementedException();
         }
 
-        public DataRow GetById(int id)
+        public override DataRow GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-
-        public bool Modify(int id, ModelsInterface model)
+        public override bool Modify(int id, ModelsInterface model)
         {
             throw new NotImplementedException();
         }
+
     }
 }
