@@ -8,6 +8,8 @@ using System.Data;
 using ToDo.DataLayer;
 using ToDo.DataLayer.Models;
 using ToDo.DataLayer.Repositories;
+using ToDoApp.Models;
+using System.Reflection;
 
 namespace ToDoApp.Tables
 {
@@ -61,22 +63,145 @@ namespace ToDoApp.Tables
 
         public override bool Add(ModelsInterface model)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (model is ToDo.DataLayer.Models.CategoryModel inputModel)
+                {
+                    GetTable();
+
+                    DataRow newRow = table.NewRow();
+                    newRow[1] = inputModel.CategoryName;
+
+                    SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+                    int r = adapter.Update(table.Select(null, null, DataViewRowState.Added));
+
+                    if (r != 0)
+                        return true;
+
+
+                    return false;
+                }
+                else
+                    throw new InvalidCastException($"Invalid Type for proccessing in {this.GetType().Name}");
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                adapter.Dispose();
+            }        
+
+            
         }
 
         public override bool Delete(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                GetTable();
+
+                if (table.Select($"{table.Columns[0].ColumnName} = {id}").Length>0)
+                {
+
+                    DataRow deleteRow = table.Select($"{table.Columns[0].ColumnName} = {id}")[0];
+
+                    table.Rows.Remove(deleteRow);
+
+                    SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+                    int r = adapter.Update(table.Select(null, null, DataViewRowState.Deleted));
+
+                    if (r != 0)
+                        return true;
+
+
+                    return false;
+                }
+                else
+                    throw new IndexOutOfRangeException($"Invalid id for delete proccessing in {this.GetType().Name}");
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                adapter.Dispose();
+            }
         }
 
         public override DataRow GetById(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                GetTable();
+
+                if (table.Select($"{table.Columns[0].ColumnName} = {id}").Length > 0)
+                {
+
+                    DataRow row = table.Select($"{table.Columns[0].ColumnName} = {id}")[0];
+
+                    return row;
+                }
+                else
+                    throw new IndexOutOfRangeException($"id out of range : {this.GetType().Name}");
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                adapter.Dispose();
+            }
+
+
         }
 
         public override bool Modify(int id, ModelsInterface model)
         {
-            throw new NotImplementedException();
+            try
+            {
+                GetTable();
+
+                if (table.Select($"{table.Columns[0].ColumnName} = {id}").Length > 0)
+                {
+                    if (model is ToDo.DataLayer.Models.CategoryModel inputModel)
+                    {
+                        DataRow editedRow = table.Select($"{table.Columns[0].ColumnName} = {id}")[0];
+
+                        editedRow[1] = inputModel.CategoryName;
+
+                        SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+                        int r = adapter.Update(table.Select(null, null, DataViewRowState.ModifiedCurrent));
+
+                        if (r != 0)
+                            return true;
+                    }
+                    else
+                        throw new InvalidCastException($"Invalid Type for proccessing in : {this.GetType().Name}");
+
+                }
+                else
+                    throw new IndexOutOfRangeException($"id out of range : {this.GetType().Name}");
+
+                return false;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                adapter.Dispose();
+            }
+
+
         }
 
 

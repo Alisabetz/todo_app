@@ -20,10 +20,6 @@ namespace ToDoApp.Tables
         SqlCommand command = null;
         SqlDataAdapter adapter = null;
 
-        public DeletedTasks()
-        {
-            GetTable();
-        }
         public override DataTable GetTable()
         {
             table = new DataTable();
@@ -33,7 +29,7 @@ namespace ToDoApp.Tables
                 conn = new SqlConnection(connStr);
                 conn.Open();
 
-                command = new SqlCommand("select * from Categories", conn);
+                command = new SqlCommand("select * from DeletedTasks", conn);
                 command.CommandType = CommandType.Text;
                 command.ExecuteNonQuery();
 

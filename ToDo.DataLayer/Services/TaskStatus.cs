@@ -31,7 +31,7 @@ namespace ToDoApp.Tables
                 conn = new SqlConnection(connStr);
                 conn.Open();
 
-                command = new SqlCommand("select * from Categories", conn);
+                command = new SqlCommand("select * from TaskStatus", conn);
                 command.CommandType = CommandType.Text;
                 command.ExecuteNonQuery();
 
@@ -59,7 +59,39 @@ namespace ToDoApp.Tables
 
         public override bool Add(ModelsInterface model)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (model is ToDo.DataLayer.Models.TaskStatusModel inputModel)
+                {
+                    GetTable();
+
+                    DataRow newRow = table.NewRow();
+                    newRow[0] = inputModel.TaskId;
+                    newRow[1] = inputModel.TaskStatus;
+                    newRow[2] = inputModel.date;
+
+
+                    SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+                    int r = adapter.Update(table.Select(null, null, DataViewRowState.Added));
+
+                    if (r != 0)
+                        return true;
+
+
+                    return false;
+                }
+                else
+                    throw new InvalidCastException($"Invalid Type for proccessing in {this.GetType().Name}");
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                adapter.Dispose();
+            }
         }
 
         public override bool Delete(int id)
@@ -69,7 +101,29 @@ namespace ToDoApp.Tables
 
         public override DataRow GetById(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                GetTable();
+
+                if (table.Select($"{table.Columns[0].ColumnName} = {id}").Length > 0)
+                {
+
+                    DataRow row = table.Select($"{table.Columns[0].ColumnName} = {id}")[0];
+
+                    return row;
+                }
+                else
+                    throw new IndexOutOfRangeException($"id out of range : {this.GetType().Name}");
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                adapter.Dispose();
+            }
         }
 
         public override bool Modify(int id, ModelsInterface model)
