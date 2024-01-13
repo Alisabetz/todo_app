@@ -31,7 +31,7 @@ namespace ToDoApp.Tables
                 conn = new SqlConnection(connStr);
                 conn.Open();
 
-                command = new SqlCommand("select * from Categories", conn);
+                command = new SqlCommand("select * from Tasks", conn);
                 command.CommandType = CommandType.Text;
                 command.ExecuteNonQuery();
 
@@ -185,7 +185,7 @@ namespace ToDoApp.Tables
                         DataRow editedRow = table.Select($"{table.Columns[0].ColumnName} = {id}")[0];
 
                         editedRow[1] = inputModel.TaskName;
-                        editedRow[2] = inputModel.ProfileId;
+                        //editedRow[2] = inputModel.ProfileId;
                         editedRow[3] = inputModel.CategoryId;
                         editedRow[4] = inputModel.PeriodityId;
                         if (inputModel.StartTime == TimeSpan.Zero)

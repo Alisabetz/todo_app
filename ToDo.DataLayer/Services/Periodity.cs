@@ -31,7 +31,7 @@ namespace ToDoApp.Tables
                 conn = new SqlConnection(connStr);
                 conn.Open();
 
-                command = new SqlCommand("select * from Categories", conn);
+                command = new SqlCommand("select * from Periodities", conn);
                 command.CommandType = CommandType.Text;
                 command.ExecuteNonQuery();
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ToDo.DataLayer;
 using ToDo.DataLayer.Models;
 
-namespace ToDoApp.Models
+namespace ToDo.DataLayer.Models
 {
     public class CategoryModel: ModelsInterface
     {

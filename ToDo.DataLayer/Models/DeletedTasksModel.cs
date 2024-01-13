@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ToDo.DataLayer.Models;
 
-namespace ToDoApp.Models
+namespace ToDo.DataLayer.Models
 {
     public class DeletedTasksModel : ModelsInterface
     {

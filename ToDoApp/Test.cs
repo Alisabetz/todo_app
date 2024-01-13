@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,14 +23,10 @@ namespace ToDoApp
         }
 
         private void Test_Load(object sender, EventArgs e)
-{
-            DateTime start1 = DateTime.Now.AddDays(10);
-            DateTime start2 = DateTime.Parse(DateTime.Now.ToString("dd/MM/yy"));
+        {
 
-            TimeSpan t1 = DateTime.Now.TimeOfDay;
-            TimeSpan t2 = TimeSpan.Parse("17:00:00");
-            TimeSpan t = start1.Subtract(start1.AddDays(5));
-            MessageBox.Show(t.Days.ToString());
+            DataTable table = new Category().GetTable();
+     
 
         }
 
